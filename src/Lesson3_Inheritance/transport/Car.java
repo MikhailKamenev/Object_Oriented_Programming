@@ -1,9 +1,8 @@
-package Lesson2_Incapsulation.transport;
+package Lesson3_Inheritance.transport;
 
 import java.time.LocalDate;
-import java.util.Date;
 
-public class Car {
+public class Car extends Transport {
     public class Insurance{
         private final LocalDate expirationDate;
         private final double cost;
@@ -86,12 +85,7 @@ public class Car {
             }
         }
     }
-    private String brand;
-    private String model;
     public double engineCapacity;
-    public String colour;
-    private int year;
-    private  String country;
     public String gearBox;
     private String body;
     public String registrationNumber;
@@ -99,48 +93,37 @@ public class Car {
     public boolean winterTires;
     private Key key;
     private Insurance insurance;
+    private String fuel;
 
-    public Car(String brand, String model, double engineCapacity, String colour, int year, String country,
-               String gearBox, String body, String registrationNumber, int seats, String tires) {
-        this.brand = brand;
-        if (brand == null) {
-            this.brand = "default";
-        }
-        this.model = model;
-        if (model == null) {
-            this.model = "default";
-        }
-        this.engineCapacity = engineCapacity;
+    public Car(String brand, String model, int year, String country, String bodyColour, int maxSpeed,
+               double engineCapacity, String gearBox, String body, String registrationNumber,
+               int seats, String tires) {
+        super(brand, model, year, country, bodyColour, maxSpeed);
         if (engineCapacity <= 0) {
             this.engineCapacity = 1.5;
+        } else {
+            this.engineCapacity = engineCapacity;
         }
-        this.colour = colour;
-        if (colour == null) {
-            this.colour = "белый";
-        }
-        this.year = year;
-        if (year <= 0) {
-            this.year = 2000;
-        }
-        this.country = country;
-        if (country == null) {
-            this.country = "default";
-        }
-        this.gearBox = gearBox;
         if (gearBox == null) {
             this.gearBox = "manual transmission";
+        } else {
+            this.gearBox = gearBox;
         }
-        this.body = body;
         if (body == null) {
             this.body = "default";
+        } else {
+            this.body = body;
         }
-        this.registrationNumber = registrationNumber;
         if (registrationNumber == null) {
             this.registrationNumber = "X000X000";
+        } else {
+            this.registrationNumber = registrationNumber;
         }
-        this.winterTires = true;
+        this.seats = seats;
         if (tires == null) {
             this.winterTires = true;
+        } else {
+            this.winterTires = winterTires;
         }
         if (key == null) {
             this.key = new Key();
@@ -153,30 +136,27 @@ public class Car {
         } else {
             this.insurance = insurance;
         }
+        if (fuel == null || fuel.isEmpty() || fuel.isBlank()) {
+            this.fuel = "diesel";
+        } else {
+            this.fuel = fuel;
+        }
     }
 
-    public String getBrand() {
-        return brand;
+    public String getFuel() {
+        return fuel;
     }
 
-    public String getModel() {
-        return model;
+    public void setFuel(String fuel) {
+        if (fuel != null || !fuel.isEmpty() || !fuel.isBlank()) {
+            this.fuel = fuel;
+        } else {
+            this.fuel = "diesel";
+        }
     }
 
     public double getEngineCapacity() {
         return engineCapacity;
-    }
-
-    public String getColour() {
-        return colour;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public String getCountry() {
-        return country;
     }
 
     public String getGearBox() {
@@ -198,15 +178,6 @@ public class Car {
     public boolean getTires() {
         return winterTires;
     }
-
-    public void setEngineCapacity(double engineCapacity) {
-        this.engineCapacity = engineCapacity;
-    }
-
-    public void setColour(String colour) {
-        this.colour = colour;
-    }
-
     public void setGearBox(String gearBox) {
         if (gearBox == null) {
             this.gearBox = "manual transmission";
@@ -258,8 +229,8 @@ public class Car {
 
     @Override
     public String toString() {
-        return brand + " " + model + ", " + year + " год выпуска, производство - " + country +
-                ", цвет - " + colour + ", объем двигателя = " + engineCapacity + "литра." +
+        return getBrand() + " " + getModel() + ", " + getYear() + " год выпуска, производство - " + getCountry() +
+                ", цвет - " + getBodyColour() + ", объем двигателя = " + getEngineCapacity() + "литра." +
                 "коробка передач - " + getGearBox() + ". Тип кузова - " + getBody() + ". Регистрационный номер - " +
                 getRegistrationNumber() + ". Количество мест - " + getSeats() + ". Тип шин - " +
                 (getTires() ? "летние" : "зимние") +"Страховой полис действителен до: " +getInsurance().getExpirationDate()+
@@ -267,6 +238,15 @@ public class Car {
                 ". Стоимость страхового полиса - "+getInsurance().getCost()+" руб. "+
                 "Запуск: "+getKey().getRemoteAccess()+". Доступ в автомобиль - "+
                 getKey().getKeyLess()+".";
+    }
+
+    @Override
+    public void refill() {
+        System.out.println("Подъехать к заправочной колонке так, чтобы лючок бензобака " +
+                "был с той же стороны что и заправочный шланг");
+        System.out.println("Выберите тип топлива "+getFuel()+".");
+        System.out.println("Оплатите необходимое количество топлива. Дождитесь завершения процесса заправки.");
+        System.out.println("Извлеките заправочный шланг из горловины");
     }
 
 
